@@ -9,6 +9,7 @@ import io.pry.gradle.offline_dependencies.repackaged.org.apache.maven.model.reso
 import io.pry.gradle.offline_dependencies.repackaged.org.apache.maven.model.resolution.UnresolvableModelException
 import org.gradle.api.artifacts.result.UnresolvedArtifactResult
 import org.gradle.api.Project
+import org.gradle.api.internal.artifacts.DefaultModuleIdentifier
 import org.gradle.internal.component.external.model.DefaultModuleComponentIdentifier
 import org.gradle.maven.MavenModule
 import org.gradle.maven.MavenPomArtifact
@@ -34,7 +35,7 @@ class PomDependencyModelResolver implements ModelResolver {
 
     if (!pomCache.containsKey(id)) {
       def mavenArtifacts = project.dependencies.createArtifactResolutionQuery()
-          .forComponents(new DefaultModuleComponentIdentifier(groupId, artifactId, version))
+          .forComponents(new DefaultModuleComponentIdentifier(DefaultModuleIdentifier.newId(groupId, artifactId), version))
           .withArtifacts(MavenModule, MavenPomArtifact)
           .execute()
 
@@ -54,7 +55,7 @@ class PomDependencyModelResolver implements ModelResolver {
 
       def pomFile = pomArtifact.file as File
 
-      def componentId = new DefaultModuleComponentIdentifier(groupId, artifactId, version)
+      def componentId = new DefaultModuleComponentIdentifier(DefaultModuleIdentifier.newId(groupId, artifactId), version)
       componentCache[componentId] = pomFile
 
       def pom = new FileModelSource(pomFile)

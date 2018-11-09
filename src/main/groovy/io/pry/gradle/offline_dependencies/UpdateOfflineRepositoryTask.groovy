@@ -133,8 +133,7 @@ class UpdateOfflineRepositoryTask extends DefaultTask {
           cfg.resolvedConfiguration.resolvedArtifacts.forEach({ artifact ->
             def componentId =
                 new DefaultModuleComponentIdentifier(
-                    artifact.moduleVersion.id.group,
-                    artifact.moduleVersion.id.name,
+                    artifact.moduleVersion.id.module,
                     artifact.moduleVersion.id.version
                 )
 
